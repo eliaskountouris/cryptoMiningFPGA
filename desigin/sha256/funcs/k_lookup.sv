@@ -7,9 +7,9 @@ module k_lookup
 always_comb begin
     case (i)
         6'd0    : k = 32'h428a2f98;
-        6'd1    : k = 32'h71374491; 
+        6'd1    : k = 32'h71374491;
         6'd2    : k = 32'hb5c0fbcf;
-        6'd3    : k = 32'he9b5dba5; 
+        6'd3    : k = 32'he9b5dba5;
         6'd4    : k = 32'h3956c25b;
         6'd5    : k = 32'h59f111f1;
         6'd6    : k = 32'h923f82a4;
@@ -80,7 +80,7 @@ always_comb begin
 
         default : k = 32'hffffffff;
 
-    endcase 
+    endcase
 end
 
 endmodule

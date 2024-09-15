@@ -1,13 +1,13 @@
 module choose
 (
-    input  logic [31:0] x,
-    input  logic [31:0] y,
-    input  logic [31:0] z,
+    input  logic [31:0] i_x,
+    input  logic [31:0] i_y,
+    input  logic [31:0] i_z,
     output logic [31:0] o
 );
 
 always_comb begin
-    o = (x & y) ^ (~x & z);
+    o = (i_x & i_y) ^ (~i_x & i_z);
 end
 
 endmodule
