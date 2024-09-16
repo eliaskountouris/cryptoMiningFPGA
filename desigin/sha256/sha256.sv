@@ -6,7 +6,6 @@ module sha256
     input  logic [31:0] i_letters [7:0], // a is LSB, h is MSB
     input  logic [5:0]  i_counter,
     input  logic [31:0] i_w       [3:0],
-    input  logic        i_w_bypass,
     input  logic        i_ready,
 
     output logic [31:0] o_letters [7:0], // a is LSB, h is MSB
@@ -32,8 +31,6 @@ sigma_shift_1 inst_s1  (.x(i_w[3]), .y(s1));
 sigma_0       inst_S0  (.x(i_letters[0]), .y(S0));
 majority      inst_maj (.i_x(i_letters[0]), .i_y(i_letters[1]), .i_z(i_letters[2]), .o(maj));
 
-logic        pass_1;
-logic [31:0] w_1;
 logic [31:0] hk_1;
 logic [31:0] S1_1;
 logic [31:0] ch_1;
@@ -53,8 +50,6 @@ always_ff @(posedge clk or posedge rst) begin
         wsum_1 <= 32'd0;
         S0_1   <= 32'd0;
         maj_1  <= 32'd0;
-        w_1    <= 32'd0;
-        pass_1 <= 1'b0;
 
         for (integer i = 0; i < 7; i = i+1) begin
             letters_1[i] <= 32'd0;
@@ -69,16 +64,12 @@ always_ff @(posedge clk or posedge rst) begin
         S0_1   <= S0;
         maj_1  <= maj;
         wsum_1 <= i_w[2] + i_w[0];
-        w_1    <= i_w[0];
-        pass_1 <= i_w_bypass;
 
         letters_1 <= i_letters [6:0];
     end
 end
 
 // ========= Stage 2 ==========
-logic        pass_2;
-logic [31:0] w_2;
 logic [31:0] hkS_2;
 logic [31:0] ch_2;
 logic [31:0] ss_2;
@@ -92,8 +83,6 @@ always_ff @(posedge clk or posedge rst) begin
         ss_2   <= 32'd0;
         wsum_2 <= 32'd0;
         T2_2   <= 32'd0;
-        w_2    <= 32'd0;
-        pass_2 <= 1'b0;
 
         for (integer i = 0; i < 7; i = i+1) begin
             letters_2[i] <= 32'd0;
@@ -105,8 +94,6 @@ always_ff @(posedge clk or posedge rst) begin
         ss_2   <= s0_1 + s1_1;
         wsum_2 <= wsum_1;
         T2_2   <= S0_1 + maj_1;
-        w_2    <= w_1;
-        pass_2 <= pass_1;
 
         letters_2 <= letters_1; 
     end
@@ -129,7 +116,7 @@ always_ff @(posedge clk or posedge rst) begin
 
     end else begin
         sch_3 <= hkS_2 + ch_2;
-        w_3   <= (pass_2) ? w_1 : ss_2 + wsum_2;
+        w_3   <= ss_2 + wsum_2;
         T2_3  <= T2_2;
 
         letters_3 <= letters_2; 

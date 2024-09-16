@@ -15,7 +15,6 @@ logic wvalid;
 logic valid;
 logic valid_r;
 logic rdy;
-logic bypass;
 logic [5:0] counter;
 
 logic [31:0] letter [7:0];
@@ -23,7 +22,7 @@ logic [31:0] o_let [7:0];
 sha256 sha_inst (.clk(clk), .rst(rst), .i_letters(letter),
                 .i_counter(counter), .i_w(win), .i_ready(rdy),
                 .o_letters(o_let), .o_letters_valid(valid),
-                .o_w(wout), .o_w_valid(wvalid), .i_w_bypass(bypass));
+                .o_w(wout), .o_w_valid(wvalid));
 
 
 always_ff @(posedge clk or posedge rst) begin
@@ -61,7 +60,6 @@ end
 always_comb begin
     o_valid = (counter == 6'd63) & valid;
     rdy = ready | valid_r;
-    bypass = (counter < 6'd16);
     
     if (counter < 6'd16) begin
         win[0] = w[counter];

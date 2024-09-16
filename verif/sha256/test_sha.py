@@ -7,9 +7,10 @@ async def create_clock(dut):
     await cocotb.start(c.start()) 
 
 @cocotb.test()
-async def test(dut):
+async def test_basic(dut):
     await create_clock(dut)
-    
+   
+    # Hex message of 616263
     l = [1633837952, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24]
     dut.i_w.value = l[::-1]
     await Timer(2, units="ns") 
@@ -23,3 +24,4 @@ async def test(dut):
 
     while (dut.o_valid.value != 1):
         await RisingEdge(dut.clk)
+    assert dut.out.value == [4060091821, 3021012833, 2518121116, 2953011619, 1571693091, 1094795486, 2399260650, 3128432319]

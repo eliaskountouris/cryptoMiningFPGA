@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1726495544" />
+    <testcase name="test_basic" classname="test_sha" file="/home/elias/Desktop/projects/crypto/verif/sha256/test_sha.py" lineno="9" time="0.03609347343444824" sim_time_ns="3850.001" ratio_time="106667.51170380549" />
+  </testsuite>
+</testsuites>
