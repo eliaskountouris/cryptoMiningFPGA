@@ -1,7 +1,7 @@
 module k_lookup 
 (
-    input  logic [4:0]  i,
-    output logic [32:0] k
+    input  logic [5:0]  i,
+    output logic [31:0] k
 );
 
 always_comb begin
